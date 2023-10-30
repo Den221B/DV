@@ -5,7 +5,7 @@ import telebot
 from telebot.types import ReplyKeyboardMarkup, KeyboardButton
 from pydub import AudioSegment
 
-bot = telebot.TeleBot('6644384647:AAHAqwZc0PCO7m7vhXO_eON_ZLtvNk4WHCo')
+bot = telebot.TeleBot('')
 
 lang=''
 
