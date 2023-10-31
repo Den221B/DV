@@ -4,20 +4,26 @@ import librosa.display as ld
 import numpy as np
 
 Sample_Rate = 22050
-path='ru_test.wav'
+path = 'ru_test.wav'
+
+
 def get_signal(path, SR):
-    signal, sr = librosa.load(path, sr = SR)
+    signal, sr = librosa.load(path, sr=SR)
     mpl.figure(figsize=(12, 4))
     return signal, sr
+
+
 def AmplitudeOnTime():
     global path
     global Sample_Rate
     signal, sr = get_signal(path, Sample_Rate)
-    #ld.waveshow(signal, sr=22050)  # Амплитуда от времени; конфликт версий
+    # ld.waveshow(signal, sr=22050)  # Амплитуда от времени; конфликт версий
     mpl.plot(signal)
     mpl.xlabel('Samples')
     mpl.ylabel('Amplitude')
     mpl.show()
+
+
 def AmplitudeOnFreq():
     global path
     global Sample_Rate
@@ -29,6 +35,8 @@ def AmplitudeOnFreq():
     mpl.xlabel('Frequency Bin')
     mpl.ylabel('Amplitude')
     mpl.show()
+
+
 def Spectrogram():
     global path
     global Sample_Rate
@@ -39,6 +47,30 @@ def Spectrogram():
     mpl.colorbar()
     mpl.show()
 
+
+def get_mfcc():
+    global path
+    global Sample_Rate
+    signal, sr = get_signal(path, Sample_Rate)
+    return librosa.feature.mfcc(y=signal, sr=sr, n_mfcc=40,
+                                hop_length=512)  # n_mfcc - еол-во коэфф | hop_length - размер кадра
+
+
+def mfcc_spectro():
+    global path
+    global Sample_Rate
+    signal, sr = get_signal(path, Sample_Rate)
+    mls = librosa.feature.melspectrogram(y=signal, sr=sr, hop_length=512, n_mels=40)
+    ld.specshow(librosa.power_to_db(mls, ref=np.max), y_axis='mel', fmax=8000, x_axis='time')
+    mpl.colorbar(format='%+2.0f dB')
+    mpl.title('Mel spectrogram')
+    mpl.show()
+
+
+signal, sr = get_signal(path, Sample_Rate)
+print(signal)
+print(get_mfcc())
 AmplitudeOnTime()
 AmplitudeOnFreq()
 Spectrogram()
+mfcc_spectro()
