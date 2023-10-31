@@ -92,6 +92,9 @@ def save_and_send_audio(message) -> None:
         sendet_audio= open ("temp/YourAnswer.mp3", 'rb')
         bot.send_audio(message.chat.id, sendet_audio)
         sendet_audio.close()
+    except FileNotFoundError:
+        os.mkdir("temp")
+        save_and_send_audio(message)
     finally:
         cleanup_temp_files()
 
